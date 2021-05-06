@@ -20,9 +20,9 @@ const LoginBox = (props) => {
 
     return (
         <React.Fragment>
-            <form onSubmit={e => handleSubmit(e)}>
+            <form onSubmit={handleSubmit}>
                 <h1>Enter your nickname</h1>
-                <input type='text' onChange={e => handleInput(e)}/>
+                <input type='text' onChange={handleInput}/>
                 <button type="submit">Go to chat</button>
             </form>
         </React.Fragment>

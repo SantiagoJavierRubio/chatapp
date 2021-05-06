@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 const ChatBox = (props) => {
 
     const { socket } = props
-
     const [messages, updateMsg] = useState([]);
     const [inputMsg, getMsg] = useState();
 
@@ -22,8 +21,11 @@ const ChatBox = (props) => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        socket.emit('new_msg', [socket.id, inputMsg])
-        document.getElementById("message-input").value = null;
+        if(inputMsg){
+            socket.emit('new_msg', [socket.id, inputMsg])
+            document.getElementById("message-input").value = null;
+            getMsg(null);
+        }
     }
 
     return (
@@ -46,11 +48,12 @@ const ChatBox = (props) => {
                     }
                 })}
             </div>
-            <input id="message-input" type="text" onChange={(e)=>handleInput(e)} />
-            <button type="submit" onClick={(e) => handleSubmit(e)}>Send</button>
+            <form onSubmit={handleSubmit}>
+                <input id="message-input" type="text" onChange={handleInput} />
+                <button type="submit">Send</button>
+            </form> 
         </React.Fragment>
     )
-
 }
 
 export default ChatBox;

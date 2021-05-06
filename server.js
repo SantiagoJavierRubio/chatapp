@@ -4,10 +4,13 @@ const path = require('path');
 const app = express();
 const http = require('http');;
 const socketio =  require('socket.io');
+const fileUpload = require('express-fileupload');
 
+// Express setup
 app.set('port', process.env.PORT || 3001);
 app.use(express.json());
 app.use(cors());
+app.use(fileUpload());
 
 const server = http.createServer(app).listen(app.get('port'), () => {
     console.log(`Server listening to port ${app.get('port')}`);
@@ -17,9 +20,26 @@ app.get('/', (req, res) => {
     res.send('hola');
 })
 
-const active_users = []
+
+
+// Upload endpoint
+app.post('/upload', (req, res) => {
+    if(req.files === null) {
+        return res.status(400).json({msg: 'No file uploaded'});
+    }
+    let file = req.files.file;
+    file.mv(`${__dirname}/client/public/uploads/${file.name}`, err => {
+        if(err) {
+            console.log(err);
+            return res.status(500).send(err);
+        }
+        res.json({ fileName: file.name, filePath: `/uploads/${file.name}`});
+    })
+})
 
 // Socket io
+const active_users = []
+
 const io = socketio(server);
 io.on('connection', (socket) => {
     console.log(`User connected with socket: ${socket.id}`);
