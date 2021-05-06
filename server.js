@@ -31,11 +31,29 @@ io.on('connection', (socket) => {
         }
         active_users.push(new_user);
         io.emit('users', active_users);
+    });
+
+    socket.on('new_msg', (msg_data) => {
+        let id = msg_data[0];
+        let username;
+        for(user of active_users){
+            if(user.id === id){
+                username = user.username;
+                break;
+            }
+        }
+
+        let new_msg = {
+            sender_id: id,
+            username: username,
+            text: msg_data[1]
+        }
+
+        io.emit('msg', new_msg);
     })
 
     socket.on('disconnect', () => {
-        let index;
-        let gotUser = false;
+        let index = null;
         for(user of active_users) {
             if(user.id === socket.id){
                 index = active_users.indexOf(user);
@@ -43,7 +61,7 @@ io.on('connection', (socket) => {
                 break;
             }
         }
-        if(gotUser){
+        if(index){
             active_users.splice(index, 1);
             io.emit('users', active_users);
         }
