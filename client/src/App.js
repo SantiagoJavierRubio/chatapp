@@ -1,19 +1,26 @@
-import './App.css';
 import React, { useState, useEffect } from 'react';
+import LoginBox from './components/LoginBox';
+import UserList from './components/UserList';
 import { io } from 'socket.io-client';
-const socket = io('localhost:3001');
+const socket = io();
 
 function App() {
 
+  const [logged, logIn] = useState(false);
+
+  const handleLogin = () => {
+    logIn(true);
+  }
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and  to reload.
-        </p>
-      </header>
+    <div>
+      {!logged ? (
+        <LoginBox socket={socket} handleLogin={handleLogin}/>
+      ):(
+        <UserList socket={socket} />
+      )}
     </div>
+
   );
 }
 

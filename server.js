@@ -2,39 +2,51 @@ const express =  require('express');
 const cors = require('cors');
 const path = require('path');
 const app = express();
-const httpServer = require('http').createServer();
-const io = require('socket.io')(httpServer);
+const http = require('http');;
+const socketio =  require('socket.io');
 
-const port = process.env.PORT || 3001;
-
-const corsOptions = {
-    origin: 'http://localhost:3000/'
-}
-
-// app.use((req, res, next) => {
-//     console.log(`Request_endpoint: ${req.method} ${req.url}`);
-//     next();
-// });
-
+app.set('port', process.env.PORT || 3001);
 app.use(express.json());
+app.use(cors());
 
-app.use(cors(corsOptions));
-
+const server = http.createServer(app).listen(app.get('port'), () => {
+    console.log(`Server listening to port ${app.get('port')}`);
+});
 
 app.get('/', (req, res) => {
     res.send('hola');
 })
 
-app.listen(port, () => console.log(`BACK_END_SERVICE_PORT: ${port}`));
+const active_users = []
 
 // Socket io
-
+const io = socketio(server);
 io.on('connection', (socket) => {
-    //console.log(`User connected with socket: ${socket.id}`);
-    console.log('hola');
+    console.log(`User connected with socket: ${socket.id}`);
 
-    socket.on('disconnect', ()=>{
-        console.log(`User ${socket.id} disconnected`);
+    socket.on('login', (username) => {
+        let new_user = {
+            id: socket.id,
+            username: username,
+        }
+        active_users.push(new_user);
+        io.emit('users', active_users);
+    })
+
+    socket.on('disconnect', () => {
+        let index;
+        let gotUser = false;
+        for(user of active_users) {
+            if(user.id === socket.id){
+                index = active_users.indexOf(user);
+                gotUser = true;
+                break;
+            }
+        }
+        if(gotUser){
+            active_users.splice(index, 1);
+            io.emit('users', active_users);
+        }
     })
 });
 
