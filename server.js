@@ -64,23 +64,24 @@ io.on('connection', (socket) => {
     });
 
     socket.on('new_msg', (msg_data) => {
-        let id = msg_data[0];
         let username;
         for(user of active_users){
-            if(user.id === id){
+            if(user.id === msg_data.id){
                 username = user.username;
                 break;
             }
         }
 
         let new_msg = {
-            sender_id: id,
+            sender_id: msg_data.id,
             username: username,
-            text: msg_data[1]
+            text: msg_data.text,
+            isImg: msg_data.isImg,
+            file: msg_data.file
         }
 
         io.emit('msg', new_msg);
-    })
+    });
 
     socket.on('disconnect', () => {
         let index = null;

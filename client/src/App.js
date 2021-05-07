@@ -22,7 +22,7 @@ function App() {
         <div>
           <UserList socket={socket} />
           <ChatBox socket={socket} />
-          <ImageTagger />
+          <ImageTagger socket={socket}/>
         </div>
       )}
     </React.Fragment>

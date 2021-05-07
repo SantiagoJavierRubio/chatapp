@@ -22,7 +22,13 @@ const ChatBox = (props) => {
     const handleSubmit = e => {
         e.preventDefault();
         if(inputMsg){
-            socket.emit('new_msg', [socket.id, inputMsg])
+            let msg_data = {
+                id: socket.id,
+                text: inputMsg,
+                isImg: false,
+                file: null,
+            }
+            socket.emit('new_msg', msg_data)
             document.getElementById("message-input").value = null;
             getMsg(null);
         }
@@ -32,17 +38,26 @@ const ChatBox = (props) => {
         <React.Fragment>
             <div>
                 {messages.map(message => {
-                    if(message.id === socket.id){
+                    if(message.sender_id === socket.id){
                         return(
                             <div className="msg-me" key={messages.indexOf(message)}>
-                                <p>{message.text}</p>
+                                {message.isImg ? (
+                                    <img src={message.file.filePath} alt={message.file.fileName} />
+                                ):(
+                                 <p>{message.text}</p>
+                                )}
                             </div>
                         )
                     } else {
                         return(
                             <div className="msg-other" key={messages.indexOf(message)}>
                                 <p className="msg-sender">{message.username}</p>
-                                <p>{message.text}</p>
+                                {message.isImg ? (
+                                    <img src={message.file.filePath} alt={message.file.fileName} />
+                                ):(
+                                 <p>{message.text}</p>
+                                )}
+                                
                             </div>
                         )
                     }
