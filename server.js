@@ -20,7 +20,12 @@ app.get('/', (req, res) => {
     res.send('hola');
 })
 
-
+// check file extension
+const allowed_extensions = ['jpg', 'png', 'gif', 'jpeg']
+const checkExt = (file_name) => {
+    let ext = file_name.slice((file_name.lastIndexOf('.') -1 >>> 0) +2);
+    return allowed_extensions.includes(ext);
+}
 
 // Upload endpoint
 app.post('/upload', (req, res) => {
@@ -28,13 +33,18 @@ app.post('/upload', (req, res) => {
         return res.status(400).json({msg: 'No file uploaded'});
     }
     let file = req.files.file;
-    file.mv(`${__dirname}/client/public/uploads/${file.name}`, err => {
-        if(err) {
-            console.log(err);
-            return res.status(500).send(err);
-        }
-        res.json({ fileName: file.name, filePath: `/uploads/${file.name}`});
-    })
+    if (checkExt(file.name)){
+        let filename = `${Date.now()}-${file.name.replace(/\s+/g, '')}`;
+        file.mv(`${__dirname}/client/public/uploads/${filename}`, err => {
+            if(err) {
+                console.log(err);
+                return res.status(500).send(err);
+            }
+            res.json({ fileName: file.name, filePath: `/uploads/${filename}`});
+        })
+    } else {
+        return res.status(400).json({ msg: 'File format is not supported' });
+    }
 })
 
 // Socket io

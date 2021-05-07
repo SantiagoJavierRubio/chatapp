@@ -16,6 +16,10 @@ const ImageTagger = () => {
         setFile(e.target.files[0]);
     }
 
+    const handleSendImage = () => {
+
+    }
+
     const handleSubmit = async e => {
         e.preventDefault();
         let formData = new FormData();
@@ -57,6 +61,7 @@ const ImageTagger = () => {
                     </div>
                 ):( null)
                 }
+                <button onClick={handleSendImage}>Send</button>
                 <button onClick={e => setModal(false)}>X</button>
             </Modal>
         </React.Fragment>
