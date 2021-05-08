@@ -7,6 +7,7 @@ const ImageTagger = (props) => {
     const { socket } = props;
 
     const [showModal, setModal] = useState(false);
+    const [toTag, setTag] = useState(false);
     const [file, setFile] = useState('');
     const [uploadedFile, setUploadedFile] = useState({});
     const [canSend, setSend] = useState(false);
@@ -64,16 +65,28 @@ const ImageTagger = (props) => {
                 isOpen={showModal}
                 onRequestClose={() => setModal(false)}
             >
-                <h2>Post your picture and tag your friends!</h2>
+                <h2>Send an photo</h2>
                 <form onSubmit={handleSubmit}>
                     <input type="file" onChange={handleFile}/>
                     <input type="submit" value="Upload" />
                 </form>
-                { uploadedFile ? (
-                    <div>
-                        <img src={uploadedFile.filePath} alt="" />
-                    </div>
-                ):( null)
+                { uploadedFile.filePath ? (
+                    <React.Fragment>
+                    {toTag ? (
+                        <div>
+                            <h3>Click on the image to add a tag:</h3>
+                            <canvas></canvas>
+                            <img src={uploadedFile.filePath} alt="" />
+                            <button onClick={e => setTag(false)}>Cancel tags</button>
+                        </div>
+                    ):(
+                        <div>
+                            <img src={uploadedFile.filePath} alt="" />
+                            <button onClick={e => setTag(true)}>Add tags</button>
+                        </div>
+                    )}
+                </React.Fragment>
+                ):(null)
                 }
                 <button onClick={handleSendImage} disabled={!canSend}>Send</button>
                 <button onClick={e => setModal(false)}>X</button>
