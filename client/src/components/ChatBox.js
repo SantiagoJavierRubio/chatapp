@@ -27,6 +27,7 @@ const ChatBox = (props) => {
                 text: inputMsg,
                 isImg: false,
                 file: null,
+                tags: null,
             }
             socket.emit('new_msg', msg_data)
             document.getElementById("message-input").value = null;
@@ -42,7 +43,10 @@ const ChatBox = (props) => {
                         return(
                             <div className="msg-me" key={messages.indexOf(message)}>
                                 {message.isImg ? (
-                                    <img src={message.file.filePath} alt={message.file.fileName} />
+                                    <div className="img-msg">
+                                        <img src={message.file.filePath} alt={message.file.fileName} />
+                                        <canvas></canvas>
+                                    </div>
                                 ):(
                                  <p>{message.text}</p>
                                 )}

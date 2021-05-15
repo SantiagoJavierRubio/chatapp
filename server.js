@@ -77,7 +77,8 @@ io.on('connection', (socket) => {
             username: username,
             text: msg_data.text,
             isImg: msg_data.isImg,
-            file: msg_data.file
+            file: msg_data.file,
+            tags: msg_data.tags
         }
 
         io.emit('msg', new_msg);
