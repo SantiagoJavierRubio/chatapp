@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
 
+
 const ImageTagger = (props) => {
 
     const { socket } = props;
@@ -16,7 +17,7 @@ const ImageTagger = (props) => {
     const [tags, setTags] = useState([]);
     const [isTagging, setTagging] = useState(false);
     const [hasCanvas, setHasCanvas] = useState(false);
-    const [hlTag, setHighlight] = useState(null)
+    const [hlTag, setHighlight] = useState(null);
 
     useEffect(() => {
         Modal.setAppElement('body');
@@ -189,13 +190,13 @@ const ImageTagger = (props) => {
             >
                 <h2>Send an photo</h2>
                 <form onSubmit={handleSubmit}>
-                    <input type="file" onChange={handleFile}/>
+                    <input type="file" onChange={handleFile} accept=".jpg, .jpeg, .png, .gif"/>
                     <input type="submit" value="Upload" />
                 </form>
                 { uploadedFile.filePath ? (
                     <React.Fragment>
                     {toTag ? (
-                        <div style={{position: 'relative'}}>
+                        <div style={{position: 'relative', width: '100%'}}>
                             <h3>Click on the image to add a tag:</h3>
                             <div>
                                 <canvas
@@ -212,7 +213,7 @@ const ImageTagger = (props) => {
                                     alt="" 
                                     id="img-to-tag"
                                     onLoad={handleImgLoad}
-                                    style={{zIndex: 1}}
+                                    style={{zIndex: 1, width: '100%'}}
                                 />
                             </div>
                             <div onMouseOut={handleNoTagSelected}>

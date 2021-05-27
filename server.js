@@ -23,7 +23,8 @@ app.get('/', (req, res) => {
 // check file extension
 const allowed_extensions = ['jpg', 'png', 'gif', 'jpeg']
 const checkExt = (file_name) => {
-    let ext = file_name.slice((file_name.lastIndexOf('.') -1 >>> 0) +2);
+    let ext_brut = file_name.slice((file_name.lastIndexOf('.') -1 >>> 0) +2);
+    let ext = ext_brut.toLowerCase();
     return allowed_extensions.includes(ext);
 }
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import SentImg from './SentImg';
 
 const ChatBox = (props) => {
 
@@ -35,6 +36,7 @@ const ChatBox = (props) => {
         }
     }
 
+
     return (
         <React.Fragment>
             <div>
@@ -43,10 +45,7 @@ const ChatBox = (props) => {
                         return(
                             <div className="msg-me" key={messages.indexOf(message)}>
                                 {message.isImg ? (
-                                    <div className="img-msg">
-                                        <img src={message.file.filePath} alt={message.file.fileName} />
-                                        <canvas></canvas>
-                                    </div>
+                                    <SentImg file={message.file} tags={message.tags} />
                                 ):(
                                  <p>{message.text}</p>
                                 )}

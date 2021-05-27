@@ -3,13 +3,13 @@ import React, { useState, useEffect } from 'react';
 const UserList = (props) => {
 
     const { socket } = props;
-    const [userList, setUsers] = useState([]);
+    const [userList, setUsers] = useState([]); 
 
     useEffect(() => {
         socket.on('users', (active_users) => {
             setUsers(active_users);
         });
-    },[]);
+    });
 
     return(
         <React.Fragment>
