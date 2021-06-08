@@ -12,7 +12,7 @@ const UserList = (props) => {
     });
 
     return(
-        <React.Fragment>
+        <div className="user-list">
             <h3>Online now:</h3>
             <ul>
                 {userList.map(user => {
@@ -23,7 +23,7 @@ const UserList = (props) => {
                     }
                 })}
             </ul>
-        </React.Fragment>
+        </div>
     )
 
 }

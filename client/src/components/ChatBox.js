@@ -39,7 +39,7 @@ const ChatBox = (props) => {
 
     return (
         <React.Fragment>
-            <div>
+            <div className="msg-board">
                 {messages.map(message => {
                     if(message.sender_id === socket.id){
                         return(
@@ -56,7 +56,7 @@ const ChatBox = (props) => {
                             <div className="msg-other" key={messages.indexOf(message)}>
                                 <p className="msg-sender">{message.username}</p>
                                 {message.isImg ? (
-                                    <img src={message.file.filePath} alt={message.file.fileName} />
+                                    <SentImg file={message.file} tags={message.tags} />
                                 ):(
                                  <p>{message.text}</p>
                                 )}
@@ -66,7 +66,7 @@ const ChatBox = (props) => {
                     }
                 })}
             </div>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="msg-input-bar">
                 <input id="message-input" type="text" onChange={handleInput} />
                 <button type="submit">Send</button>
             </form> 
