@@ -3,6 +3,7 @@ import LoginBox from './components/LoginBox';
 import UserList from './components/UserList';
 import ChatBox from './components/ChatBox';
 import ImageTagger from './components/ImageTagger';
+import './App.css';
 import { io } from 'socket.io-client';
 const socket = io();
 
@@ -17,12 +18,12 @@ function App() {
   return (
     <React.Fragment>
       {!logged ? (
-        <LoginBox socket={socket} handleLogin={handleLogin}/>
+        <LoginBox socket={socket} handleLogin={handleLogin} className="login-box"/>
       ):(
         <div>
-          <UserList socket={socket} />
-          <ChatBox socket={socket} />
-          <ImageTagger socket={socket}/>
+          <UserList socket={socket} className="user-list"/>
+          <ChatBox socket={socket} className="chat-box"/>
+          <ImageTagger socket={socket} />
         </div>
       )}
     </React.Fragment>

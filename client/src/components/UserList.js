@@ -17,7 +17,7 @@ const UserList = (props) => {
             <ul>
                 {userList.map(user => {
                     if(socket.id === user.id){
-                        return <li key={user.id}>Me</li>
+                        return <li key={user.id} style={{color:'red'}}>{user.username} (You)</li>
                     } else {
                         return <li key={user.id}>{user.username}</li>
                     }

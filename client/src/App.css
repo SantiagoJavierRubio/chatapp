@@ -1,4 +1,29 @@
-.App {
+body {
+  background-color: beige;
+  font-size: 1.2rem;
+  margin-top: 0; 
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.login-box {
+  align-self: center;
+}
+
+.chat-box {
+  width: 70%;
+  float: left;
+}
+
+.user-list {
+  width: 15%;
+  height: 100vh;
+  float: left;
+}
+
+/* .App {
   text-align: center;
 }
 
@@ -35,4 +60,4 @@
   to {
     transform: rotate(360deg);
   }
-}
+} */

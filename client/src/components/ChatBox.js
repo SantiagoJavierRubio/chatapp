@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import SentImg from './SentImg';
+import './ChatBox.css';
 
 const ChatBox = (props) => {
 
@@ -12,6 +13,8 @@ const ChatBox = (props) => {
             let new_messages = [...messages];
             new_messages.push(msg_data)
             updateMsg(new_messages);
+            let bottom = document.getElementById('chat-bottom');
+            bottom.scrollIntoView({behavior: "smooth"});
         })
     })
 
@@ -47,29 +50,34 @@ const ChatBox = (props) => {
                                 {message.isImg ? (
                                     <SentImg file={message.file} tags={message.tags} />
                                 ):(
-                                 <p>{message.text}</p>
+                                 <p className="msg">{message.text}</p>
                                 )}
                             </div>
                         )
                     } else {
                         return(
                             <div className="msg-other" key={messages.indexOf(message)}>
-                                <p className="msg-sender">{message.username}</p>
+                                <p className="msg-sender">{message.username}:</p>
                                 {message.isImg ? (
                                     <SentImg file={message.file} tags={message.tags} />
                                 ):(
-                                 <p>{message.text}</p>
+                                 <p className="msg">{message.text}</p>
                                 )}
                                 
                             </div>
                         )
                     }
                 })}
+                <div id="chat-bottom" />
             </div>
             <form onSubmit={handleSubmit} className="msg-input-bar">
-                <input id="message-input" type="text" onChange={handleInput} />
-                <button type="submit">Send</button>
-            </form> 
+                <div className="flex-container">
+                    <input id="message-input" type="text" onChange={handleInput} />
+                    <button type="submit">
+                        <i class="fas fa-paper-plane fa-lg"></i>
+                    </button>
+                </div>
+            </form>
         </React.Fragment>
     )
 }
