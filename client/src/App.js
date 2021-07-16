@@ -20,10 +20,9 @@ function App() {
       {!logged ? (
         <LoginBox socket={socket} handleLogin={handleLogin} className="login-box"/>
       ):(
-        <div>
+        <div id="main-page">
           <UserList socket={socket} className="user-list"/>
           <ChatBox socket={socket} className="chat-box"/>
-          <ImageTagger socket={socket} />
         </div>
       )}
     </React.Fragment>

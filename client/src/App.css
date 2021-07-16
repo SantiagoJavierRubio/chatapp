@@ -2,6 +2,7 @@ body {
   background-color: beige;
   font-size: 1.2rem;
   margin-top: 0; 
+  overflow: hidden;
 }
 
 * {
@@ -12,15 +13,22 @@ body {
   align-self: center;
 }
 
+#main-page {
+  display: flex;
+  overflow: hidden;
+}
+
 .chat-box {
   width: 70%;
   float: left;
 }
 
 .user-list {
+  flex-shrink: 0;
   width: 15%;
   height: 100vh;
   float: left;
+  overflow-wrap: break-word;
 }
 
 /* .App {

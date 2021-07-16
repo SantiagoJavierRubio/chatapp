@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import SentImg from './SentImg';
 import './ChatBox.css';
+import ImageTagger from './ImageTagger';
 
 const ChatBox = (props) => {
 
     const { socket } = props
     const [messages, updateMsg] = useState([]);
     const [inputMsg, getMsg] = useState();
+    const [modalIsOpen, setModalIsOpen] = useState(false);
 
     useEffect(() => {
         socket.on('msg', (msg_data) => {
@@ -14,7 +16,7 @@ const ChatBox = (props) => {
             new_messages.push(msg_data)
             updateMsg(new_messages);
             let bottom = document.getElementById('chat-bottom');
-            bottom.scrollIntoView({behavior: "smooth"});
+            bottom.scrollIntoView({behavior: "auto"});
         })
     })
 
@@ -38,10 +40,9 @@ const ChatBox = (props) => {
             getMsg(null);
         }
     }
-
-
     return (
-        <React.Fragment>
+        <div id="main-chat">
+            {!modalIsOpen ? (
             <div className="msg-board">
                 {messages.map(message => {
                     if(message.sender_id === socket.id){
@@ -70,15 +71,21 @@ const ChatBox = (props) => {
                 })}
                 <div id="chat-bottom" />
             </div>
+            ) : (
+            <div className="msg-board">
+
+            </div>)
+            }
             <form onSubmit={handleSubmit} className="msg-input-bar">
                 <div className="flex-container">
                     <input id="message-input" type="text" onChange={handleInput} />
                     <button type="submit">
-                        <i class="fas fa-paper-plane fa-lg"></i>
+                        <i className="fas fa-paper-plane fa-2x"></i>
                     </button>
+                    <ImageTagger socket={socket} setModalIsOpen={setModalIsOpen}/>
                 </div>
             </form>
-        </React.Fragment>
+        </div>
     )
 }
 

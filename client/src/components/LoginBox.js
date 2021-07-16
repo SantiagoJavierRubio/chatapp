@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './LoginBox.css';
 
 
 const LoginBox = (props) => {
@@ -22,8 +23,10 @@ const LoginBox = (props) => {
         <React.Fragment>
             <form onSubmit={handleSubmit}>
                 <h1>Enter your nickname</h1>
-                <input type='text' onChange={handleInput}/>
-                <button type="submit">Go to chat</button>
+                <input className="entry-form" type='text' onChange={handleInput}/>
+                <button type="submit">
+                    <i className="fas fa-sign-in-alt fa-4x"></i>
+                </button>
             </form>
         </React.Fragment>
     )

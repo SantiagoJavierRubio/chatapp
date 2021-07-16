@@ -1,5 +1,12 @@
-html {
-    scroll-behavior: auto;
+img {
+    max-width: 50%;
+    max-height: 50%;
+}
+
+#main-chat {
+    margin-top: 1rem;
+    width: 100%;
+    height: 100%;
 }
 
 .msg-board {
@@ -49,8 +56,10 @@ html {
 }
 
 .msg-input-bar {
-    width: 85%;
-    float: right;
+    margin-top: .5rem;
+    position: relative;
+    width: 100%;
+    float: left;
 }
 
 .flex-container {
@@ -58,10 +67,10 @@ html {
 }
 
 .msg-input-bar #message-input {
-    margin-top: .5rem;
-    margin-bottom: .5rem;
+    margin-top: 0;
     float: left;
-    width: 100%
+    width: 100%;
+    font-size: 1.5rem;
 }
 
 i {
@@ -75,8 +84,9 @@ i {
     float: left;
 }
 
-.msg-input-bar button:hover {
+.msg-input-bar button:hover:enabled {
     color: blue;
+    box-shadow: none;
 }
 
 
