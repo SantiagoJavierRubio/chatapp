@@ -11,6 +11,7 @@ app.set('port', process.env.PORT || 3001);
 app.use(express.json());
 app.use(cors());
 app.use(fileUpload());
+app.use(express.static(__dirname + '/public'));
 
 const server = http.createServer(app).listen(app.get('port'), () => {
     console.log(`Server listening to port ${app.get('port')}`);
@@ -36,12 +37,12 @@ app.post('/upload', (req, res) => {
     let file = req.files.file;
     if (checkExt(file.name)){
         let filename = `${Date.now()}-${file.name.replace(/\s+/g, '')}`;
-        file.mv(`${__dirname}/public/uploads/${filename}`, err => {
+        file.mv(`${__dirname}/public/${filename}`, err => {
             if(err) {
                 console.log(err);
                 return res.status(500).send(err);
             }
-            res.json({ fileName: file.name, filePath: `/uploads/${filename}`});
+            res.json({ fileName: file.name, filePath: `/${filename}`});
         })
     } else {
         return res.status(400).json({ msg: 'File format is not supported' });
