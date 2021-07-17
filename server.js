@@ -36,7 +36,7 @@ app.post('/upload', (req, res) => {
     let file = req.files.file;
     if (checkExt(file.name)){
         let filename = `${Date.now()}-${file.name.replace(/\s+/g, '')}`;
-        file.mv(`${__dirname}/client/public/uploads/${filename}`, err => {
+        file.mv(`${__dirname}/public/uploads/${filename}`, err => {
             if(err) {
                 console.log(err);
                 return res.status(500).send(err);
