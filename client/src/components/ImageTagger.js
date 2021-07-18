@@ -12,7 +12,7 @@ const ImageTagger = (props) => {
     const [showModal, setModal] = useState(false);
     const [toTag, setTag] = useState(false);
     const [file, setFile] = useState(null);
-    const [uploadedFile, setUploadedFile] = useState({});
+    const [uploadedFile, setUploadedFile] = useState(null);
     const [canSend, setSend] = useState(false);
     const [mousePos, setMouse] = useState([]);
     const [imgSize, setImgSize] = useState([0,0]);
@@ -75,13 +75,13 @@ const ImageTagger = (props) => {
             id: socket.id,
             text: null,
             isImg: true,
-            file: null,
+            file: uploadedFile,
             tags: tags
         }
         socket.emit('new_msg', msg_data);
         setSend(false);
         setFile(null);
-        setUploadedFile({});
+        setUploadedFile(null);
         setTags([]);
         setTag(false);
         setButtonText('Upload image');
@@ -90,9 +90,11 @@ const ImageTagger = (props) => {
     const handleSubmit = async () => {
 
         try {
-            axios.post('/img_upload', { file })
+            const res = await axios.post('/img_upload', { file })
                 .then((res) => console.log(res))
                 .catch((err) => console.log(err));
+            const { code } = res.data;
+            setUploadedFile(code);
         } catch (err) { console.log(err.message) }
 
         // let formData = new FormData();

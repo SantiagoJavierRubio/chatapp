@@ -26,12 +26,15 @@ app.get('/', (req, res) => {
 const images = {}
 
 app.post('/img_upload', (req, res) => {
-    let img = req.body;
-    images.img = img;
+    let img = req.body.file;
+    let img_code = `${img.substring(0,10)}-${Date.now()}`
+    images[img_code] = img;
+    res.json({ code: img_code });
 })
 
 app.get('/images', (req, res) => {
-    res.send(images);
+    let code = req.body.code;
+    res.send(images[code]);
 })
 
 // check file extension
