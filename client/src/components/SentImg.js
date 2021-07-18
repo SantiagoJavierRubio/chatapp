@@ -10,7 +10,7 @@ const SentImg = (props) => {
 
     useEffect(() => {
 
-        axios.get(`/images?code=${file}`)
+        axios.get(`/images/:${file}`)
             .then((response) => setImgUrl(response.data))
             .catch((err) => console.log(err));
 

@@ -32,8 +32,8 @@ app.post('/img_upload', (req, res) => {
     res.json({ code: img_code });
 })
 
-app.get('/images', (req, res) => {
-    let code = req.query.code;
+app.get('/images/:code', (req, res) => {
+    let code = req.params.code;
     res.send(images[code]);
 })
 
