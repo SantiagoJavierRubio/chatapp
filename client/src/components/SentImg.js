@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const SentImg = (props) => {
 
     const { file, tags } = props;
 
     const [imgSize, setImgSize] = useState({width: 0, height: 0});
+    const [imgUrl, setImgUrl] = useState(null);
 
     useEffect(() => {
+
+        axios.get(`/images?code=${file}`)
+            .then((response) => setImgUrl(response.data))
+            .catch((err) => console.log(err));
 
         function handleResize() {
             try {
@@ -64,7 +70,7 @@ const SentImg = (props) => {
                 />
                 <img 
                     id={file}
-                    src={file}
+                    src={imgUrl}
                     alt="sent-img"
                     style={{zIndex: 0}}
                     onLoad={handleImgLoad}
@@ -74,7 +80,7 @@ const SentImg = (props) => {
     } else {
         return (
             <div className="img-msg">
-                <img src={file} alt="sent-img" />
+                <img src={imgUrl} alt="sent-img" />
             </div>
         )
     }

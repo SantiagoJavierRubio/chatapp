@@ -33,7 +33,7 @@ app.post('/img_upload', (req, res) => {
 })
 
 app.get('/images', (req, res) => {
-    let code = req.body.code;
+    let code = req.query.code;
     res.send(images[code]);
 })
 
