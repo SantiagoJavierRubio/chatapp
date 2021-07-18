@@ -21,6 +21,8 @@ app.get('/', (req, res) => {
     res.send('hola');
 })
 
+app.get("/", express.static(path.join(__dirname, "./public")));
+
 // check file extension
 const allowed_extensions = ['jpg', 'png', 'gif', 'jpeg']
 const checkExt = (file_name) => {
