@@ -19,9 +19,20 @@ const server = http.createServer(app).listen(app.get('port'), () => {
 
 app.get('/', (req, res) => {
     res.send('hola');
+});
+
+
+// img DB
+const images = {}
+
+app.post('/img_upload', (req, res) => {
+    let img = req.body;
+    images.img = img;
 })
 
-app.get("/", express.static(path.join(__dirname, "./public")));
+app.get('/images', (req, res) => {
+    res.send(images);
+})
 
 // check file extension
 const allowed_extensions = ['jpg', 'png', 'gif', 'jpeg']

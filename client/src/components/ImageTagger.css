@@ -1,7 +1,3 @@
-input[type="file"] {
-    display: none;
-}
-
 .modal {
     display: flex;
     flex-direction: column;
@@ -9,6 +5,7 @@ input[type="file"] {
     width: 100%;
     height: 100%;
 }
+
 
 button:hover:enabled {
     box-shadow: 1px 1px black;

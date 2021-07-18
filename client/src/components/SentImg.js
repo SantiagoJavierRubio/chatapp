@@ -63,9 +63,9 @@ const SentImg = (props) => {
                     onMouseLeave={hideTags}
                 />
                 <img 
-                    id={file.filePath}
-                    src={file.filePath}
-                    alt={file.fileName}
+                    id={file}
+                    src={file}
+                    alt="sent-img"
                     style={{zIndex: 0}}
                     onLoad={handleImgLoad}
                 />
@@ -74,7 +74,7 @@ const SentImg = (props) => {
     } else {
         return (
             <div className="img-msg">
-                <img src={file.filePath} alt={file.fileName} />
+                <img src={file} alt="sent-img" />
             </div>
         )
     }
