@@ -6,14 +6,18 @@
     height: 100%;
 }
 
+#file-upload {
+    display: none;
+}
 
 button:hover:enabled {
     box-shadow: 1px 1px black;
 }
 
 .custom-file-upload {
-    font-size: 1.2em;
+    font-size: 1.5em;
     border: 2px solid #ccc;
+    border-radius: 5px;
     padding: 5px;
     background-color: rgb(235, 235, 235);
     width: fit-content;

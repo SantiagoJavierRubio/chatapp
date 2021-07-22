@@ -32,6 +32,7 @@ const SentImg = (props) => {
         let imgWidth = img.width;
         let imgHeight = img.height;
         setImgSize({width: imgWidth, height: imgHeight});
+        e.target.src = file;
     }
 
     const showTags = e => {
@@ -53,7 +54,7 @@ const SentImg = (props) => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
-    if (tags) {
+    if (tags.length > 0) {
         return (
             <div className="img-msg" style={{position: 'relative'}}>
                 <canvas

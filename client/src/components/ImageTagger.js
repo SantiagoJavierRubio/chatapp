@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
 import './ImageTagger.css';
-import FileBase from 'react-file-base64';
 import Resizer from 'react-image-file-resizer';
 
 
@@ -76,6 +75,7 @@ const ImageTagger = (props) => {
     useEffect(() => {
         if (file) {
             setSend(true);
+            setButtonText('Change image');
         }
     }, [file]);
 
@@ -93,7 +93,8 @@ const ImageTagger = (props) => {
         
         setModal(false);
         let msg_data = {
-            id: socket.id,
+            usr_id: socket.id,
+            msg_id: `${Date.now()}-${socket.id}`,
             text: null,
             isImg: true,
             file: code,
@@ -110,7 +111,7 @@ const ImageTagger = (props) => {
 
     // submits the base64 img to backend and triggers img send
     const handleSubmit = async () => {
-
+        setSend(false);
         try {
             const res = await axios.post('/img_upload', { file, headers: {
                 'Content-Type': 'multipart/form-data'
@@ -129,7 +130,6 @@ const ImageTagger = (props) => {
         setModal(false);
         setButtonText('Upload image');
         // Mejorable: borrar la imagen solo al salir completamente del modal.
-        setFile(null);
         setFile(null);
     }
 
@@ -273,6 +273,9 @@ const ImageTagger = (props) => {
                 <div className="modal">
                     <h2>Send a photo</h2>
                     {/* <FileBase type="file" multiple={false} onDone={({ base64 }) => setFile(base64)} /> */}
+                    <label htmlFor="file-upload" className="custom-file-upload">
+                        {buttonText}
+                    </label>
                     <input id='file-upload' type="file" onChange={handleFile} accept=".jpg, .jpeg, .gif" />
                     { file ? (
                         <React.Fragment>

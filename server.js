@@ -92,7 +92,8 @@ io.on('connection', (socket) => {
         }
 
         let new_msg = {
-            sender_id: msg_data.id,
+            sender_id: msg_data.usr_id,
+            message_id = msg_data.msg_id,
             username: username,
             text: msg_data.text,
             isImg: msg_data.isImg,
@@ -108,7 +109,6 @@ io.on('connection', (socket) => {
         for(user of active_users) {
             if(user.id === socket.id){
                 index = active_users.indexOf(user);
-                gotUser = true;
                 break;
             }
         }

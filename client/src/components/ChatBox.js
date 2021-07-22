@@ -12,11 +12,11 @@ const ChatBox = (props) => {
     const [inputMsg, getMsg] = useState();
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [imgData, setImgData] = useState({});
-    
-    useEffect(() => {
-        socket.on('msg', (msg_data) => {
+
+    socket.on('msg', (msg_data) => {
+        if (msg_data.message_id !== messages[messages.length - 1].message_id) {
             let new_messages = [...messages];
-            if (msg_data.isImg) {
+            if (msg_data.isImg && !imgData[msg_data.file]) {
                 axios.get(`/images/${msg_data.file}`)
                 .then((response) => {
                     let new_img_data = imgData;
@@ -29,8 +29,30 @@ const ChatBox = (props) => {
             updateMsg(new_messages);
             let bottom = document.getElementById('chat-bottom');
             bottom.scrollIntoView({behavior: "auto"});
-        })
-    });
+        }
+    })
+    
+    useEffect(() => {
+        // socket.on('msg', (msg_data) => {
+        //     let new_messages = [...messages];
+        //     if (msg_data.isImg && !imgData[msg_data.file]) {
+        //         axios.get(`/images/${msg_data.file}`)
+        //         .then((response) => {
+        //             let new_img_data = imgData;
+        //             new_img_data[msg_data.file] = response.data
+        //             setImgData(new_img_data);
+        //         })
+        //         .catch((err) => console.log(err));
+        //     }
+        //     new_messages.push(msg_data)
+        //     updateMsg(new_messages);
+        //     if (!modalIsOpen) {
+        //         let bottom = document.getElementById('chat-bottom');
+        //         bottom.scrollIntoView({behavior: "auto"});
+        //     }
+        // })
+        console.log('oli');
+    }, [imgData]);
 
     const handleInput = e => {
         let new_msg = e.target.value;
@@ -39,9 +61,10 @@ const ChatBox = (props) => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        if(inputMsg){
+        if(inputMsg && !modalIsOpen){
             let msg_data = {
-                id: socket.id,
+                usr_id: socket.id,
+                msg_id: `${Date.now()}-${socket.id}`,
                 text: inputMsg,
                 isImg: false,
                 file: null,
@@ -59,7 +82,7 @@ const ChatBox = (props) => {
                 {messages.map(message => {
                     if(message.sender_id === socket.id){
                         return(
-                            <div className="msg-me" key={messages.indexOf(message)}>
+                            <div className="msg-me" key={message.message_id}>
                                 {message.isImg ? (
                                     <SentImg file={imgData[message.file]} tags={message.tags} id={message.file} />
                                 ):(
@@ -69,7 +92,7 @@ const ChatBox = (props) => {
                         )
                     } else {
                         return(
-                            <div className="msg-other" key={messages.indexOf(message)}>
+                            <div className="msg-other" key={message.message_id}>
                                 <p className="msg-sender">{message.username}:</p>
                                 {message.isImg ? (
                                     <SentImg file={imgData[message.file]} tags={message.tags} id={message.file} />
@@ -85,8 +108,9 @@ const ChatBox = (props) => {
             </div>
             ) : (
             <div className="msg-board">
-
-            </div>)
+                <div id="chat-bottom" />
+            </div>
+            )
             }
             <form onSubmit={handleSubmit} className="msg-input-bar">
                 <div className="flex-container">
