@@ -12,7 +12,7 @@ const ImageTagger = (props) => {
     const [showModal, setModal] = useState(false);
     const [toTag, setTag] = useState(false);
     const [file, setFile] = useState(null);
-    const [uploadedFile, setUploadedFile] = useState(null);
+    const [uploadedFile, setUploadedFile] = useState(undefined);
     const [canSend, setSend] = useState(false);
     const [mousePos, setMouse] = useState([]);
     const [imgSize, setImgSize] = useState([0,0]);
@@ -68,34 +68,42 @@ const ImageTagger = (props) => {
         setFile(e.target.files[0]);
     }
 
-    const handleSendImage = () => {
-        handleSubmit();
+    const handleSendImage = (code) => {
+        
         setModal(false);
         let msg_data = {
             id: socket.id,
             text: null,
             isImg: true,
-            file: uploadedFile,
+            file: code,
             tags: tags
         }
         socket.emit('new_msg', msg_data);
+        console.log(msg_data);
         setSend(false);
-        setFile(null);
         setUploadedFile(null);
         setTags([]);
         setTag(false);
         setButtonText('Upload image');
+        
     }
 
     const handleSubmit = async () => {
 
         try {
-            const res = await axios.post('/img_upload', { file })
-                .then((res) => console.log(res))
-                .catch((err) => console.log(err));
-            const { code } = res.data;
-            setUploadedFile(code);
+            const res = await axios.post('/img_upload', { file, headers: {
+                'Content-Type': 'multipart/form-data'
+                } 
+            });
+            
+            const code = res.data.code;
+            
+            handleSendImage(code);
+
+
         } catch (err) { console.log(err.message) }
+
+        
 
         // let formData = new FormData();
         // formData.append('file', file);
@@ -327,7 +335,7 @@ const ImageTagger = (props) => {
                     </React.Fragment>
                     ):(null)
                     }
-                    <button id="send-btn" onClick={handleSendImage} disabled={!canSend}>Send</button>
+                    <button id="send-btn" onClick={handleSubmit} disabled={!canSend}>Send</button>
                     <button id="quit-btn" onClick={handleQuit}>
                         <i class="far fa-times-circle fa-2x"></i>
                     </button>

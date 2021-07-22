@@ -10,13 +10,15 @@ const SentImg = (props) => {
 
     useEffect(() => {
 
-        axios.get(`/images/:${file}`)
+        if (!file) {
+            axios.get(`/images/${file}`)
             .then((response) => setImgUrl(response.data))
             .catch((err) => console.log(err));
+        }
 
         function handleResize() {
             try {
-                    let img = document.getElementById(`${file.filePath}`);
+                    let img = document.getElementById(`${file}`);
                     let imgWidth = img.width;
                     let imgHeight = img.height;
                     setImgSize({width: imgWidth, height: imgHeight});
@@ -32,7 +34,8 @@ const SentImg = (props) => {
 
     }, []);
 
-    const handleImgLoad = e => {
+    const handleImgLoad = async e => {
+
         let img = e.target;
         let imgWidth = img.width;
         let imgHeight = img.height;
