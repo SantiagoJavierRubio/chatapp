@@ -27,7 +27,7 @@ const images = {}
 
 app.post('/img_upload', (req, res) => {
     let img = req.body.file;
-    let img_code = `${img.substring(20,25)}-${Date.now()}`
+    let img_code = `${img.substring(20,25).replace(/\s+/g, '')}-${Date.now()}`
     images[img_code] = img;
     res.json({ code: img_code });
 })
