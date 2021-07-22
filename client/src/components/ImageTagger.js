@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import axios from 'axios';
 import './ImageTagger.css';
 import FileBase from 'react-file-base64';
+import Resizer from 'react-image-file-resizer';
 
 
 const ImageTagger = (props) => {
@@ -12,7 +13,6 @@ const ImageTagger = (props) => {
     const [showModal, setModal] = useState(false);
     const [toTag, setTag] = useState(false);
     const [file, setFile] = useState(null);
-    const [uploadedFile, setUploadedFile] = useState(undefined);
     const [canSend, setSend] = useState(false);
     const [mousePos, setMouse] = useState([]);
     const [imgSize, setImgSize] = useState([0,0]);
@@ -56,6 +56,21 @@ const ImageTagger = (props) => {
 
     // Image upload functions
 
+    const resizeFile = (file) => new Promise((resolve) => {
+        Resizer.imageFileResizer(
+            file,
+            600,
+            600,
+            "JPEG",
+            80,
+            0,
+            (uri) => {
+                resolve(uri)
+            },
+            "base64"
+        );
+    });
+
     // Comentado para probar si sirve el base 64
 
     useEffect(() => {
@@ -64,8 +79,14 @@ const ImageTagger = (props) => {
         }
     }, [file]);
 
-    const handleFile = (e) => {
-        setFile(e.target.files[0]);
+    const handleFile = async (e) => {
+        try {
+            const image = e.target.files[0];
+            const resized_img = await resizeFile(image);
+            setFile(resized_img);
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     const handleSendImage = (code) => {
@@ -79,15 +100,15 @@ const ImageTagger = (props) => {
             tags: tags
         }
         socket.emit('new_msg', msg_data);
-        console.log(msg_data);
         setSend(false);
-        setUploadedFile(null);
+        setFile(null);
         setTags([]);
         setTag(false);
         setButtonText('Upload image');
         
     }
 
+    // submits the base64 img to backend and triggers img send
     const handleSubmit = async () => {
 
         try {
@@ -95,37 +116,9 @@ const ImageTagger = (props) => {
                 'Content-Type': 'multipart/form-data'
                 } 
             });
-            
             const code = res.data.code;
-            
             handleSendImage(code);
-
-
         } catch (err) { console.log(err.message) }
-
-        
-
-        // let formData = new FormData();
-        // formData.append('file', file);
-
-        // try {
-        //     const res = await axios.post('/upload', formData, {
-        //         headers: {
-        //             'Content-Type': 'multipart/form-data'
-        //         }
-        //     });
-        //     const { fileName, filePath } = res.data;
-        //     setUploadedFile({ fileName, filePath });
-        //     setSend(true);
-        //     setButtonText('Select other');
-
-        // } catch(err) {
-        //     if(err.response.status === 500) {
-        //         console.log('There was a problem with the server')
-        //     } else {
-        //         console.log(err.response.data.msg)
-        //     }
-        // }
     }
 
     const handleQuit = () => {
@@ -137,7 +130,7 @@ const ImageTagger = (props) => {
         setButtonText('Upload image');
         // Mejorable: borrar la imagen solo al salir completamente del modal.
         setFile(null);
-        setUploadedFile({});
+        setFile(null);
     }
 
     const handleQuitTags = () => {
@@ -279,8 +272,8 @@ const ImageTagger = (props) => {
             >
                 <div className="modal">
                     <h2>Send a photo</h2>
-                    <FileBase type="file" multiple={false} onDone={({ base64 }) => setFile(base64)} />
-                    {/* <input id='file-upload' type="file" onChange={handleFile} accept=".jpg, .jpeg, .png, .gif" /> */}
+                    {/* <FileBase type="file" multiple={false} onDone={({ base64 }) => setFile(base64)} /> */}
+                    <input id='file-upload' type="file" onChange={handleFile} accept=".jpg, .jpeg, .gif" />
                     { file ? (
                         <React.Fragment>
                         {toTag ? (
