@@ -112,7 +112,7 @@ io.on('connection', (socket) => {
                 break;
             }
         }
-        if(index){
+        if(index !== null){
             active_users.splice(index, 1);
             io.emit('users', active_users);
         }

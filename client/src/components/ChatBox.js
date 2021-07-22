@@ -12,15 +12,7 @@ const ChatBox = (props) => {
     const [inputMsg, getMsg] = useState();
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [imgData, setImgData] = useState({});
-    const [loaded, setLoaded] = useState(false);
-
-    useEffect(() => {
-        if (loaded) {
-            setLoaded(false);
-        }
-    }, [loaded]);
     
-
     useEffect(() => {
         socket.on('msg', (msg_data) => {
             let new_messages = [...messages];
