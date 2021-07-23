@@ -85,7 +85,7 @@ io.on('connection', (socket) => {
     socket.on('new_msg', (msg_data) => {
         let username;
         for(user of active_users){
-            if(user.id === msg_data.id){
+            if(user.id === msg_data.usr_id){
                 username = user.username;
                 break;
             }
