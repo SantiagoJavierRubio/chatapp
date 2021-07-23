@@ -7,11 +7,7 @@ const socketio =  require('socket.io');
 // Express setup
 app.set('port', process.env.PORT || 3001);
 app.use(express.json({limit: '50mb'}));
-const corsOptions = {
-    origin: 'https://adoring-lalande-b4d9b6.netlify.app',
-    optionsSuccessStatus: 200
-  }
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.static(__dirname + '/static'));
 
 const server = http.createServer(app).listen(app.get('port'), () => {
