@@ -93,7 +93,7 @@ io.on('connection', (socket) => {
 
         let new_msg = {
             sender_id: msg_data.usr_id,
-            message_id = msg_data.msg_id,
+            message_id: msg_data.msg_id,
             username: username,
             text: msg_data.text,
             isImg: msg_data.isImg,
