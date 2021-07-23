@@ -1,19 +1,31 @@
-img {
-    max-width: 50%;
-    max-height: 50%;
+.msg-board img {
+    width: 100%;
+    height: 100%;
     border-radius: .5rem;
+    margin-top: .3rem;
 }
 
 #main-chat {
-    margin-top: 1rem;
+    /* margin-top: 1rem;
     width: 100%;
     height: 100%;
     font-size: 1.5rem;
+    min-width: 25vw;
+    min-height: 30vh;
+    float: left; */
+    position: fixed;
+    top: 1rem;
+    right: .5rem;
+    left: 20%;
+    bottom: 5rem;
+    float: left;
 }
 
 .msg-board {
     height: 90vh;
+    min-width: fit-content;
     overflow: auto;
+    overflow-x: hidden;
     padding: 1rem;
     border: solid .3rem gray;
     background-color: rgba(0, 0, 0, 0.664);
@@ -26,6 +38,7 @@ img {
 }
 
 .msg-other .msg {
+    overflow-wrap: break-word;
     width: fit-content;
     border: solid .1rem #90EE90;
     border-radius: .5rem;
@@ -44,6 +57,7 @@ img {
 }
 
 .msg-me {
+    overflow-wrap: break-word;
     width: fit-content;
     max-width: 70%;
     margin-left: auto;
@@ -78,7 +92,7 @@ img {
     font-size: 1.5rem;
 }
 
-i {
+.msg-input-bar i {
     color: inherit;
 }
 

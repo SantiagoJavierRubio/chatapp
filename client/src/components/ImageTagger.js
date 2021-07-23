@@ -259,7 +259,7 @@ const ImageTagger = (props) => {
     return (
         <React.Fragment>
             <button className="img-send-btn" onClick={() => setModal(true)}>
-                <i class="fas fa-file-image fa-2x"></i>
+                <i className="fas fa-file-image fa-2x"></i>
             </button>
             <Modal 
                 isOpen={showModal}
@@ -327,7 +327,7 @@ const ImageTagger = (props) => {
                     }
                     <button id="send-btn" onClick={handleSubmit} disabled={!canSend}>Send</button>
                     <button id="quit-btn" onClick={handleQuit}>
-                        <i class="far fa-times-circle fa-2x"></i>
+                        <i className="far fa-times-circle fa-2x"></i>
                     </button>
                 </div>
             </Modal>

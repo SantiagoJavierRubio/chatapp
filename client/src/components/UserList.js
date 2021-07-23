@@ -18,9 +18,9 @@ const UserList = (props) => {
             <ul>
                 {userList.map(user => {
                     if(socket.id === user.id){
-                        return <li key={user.id} style={{color:'red'}}><i class="fas fa-user"></i> {user.username} (You)</li>
+                        return <li key={user.id} style={{color:'red'}}><i className="fas fa-user"></i> {user.username} (You)</li>
                     } else {
-                        return <li key={user.id}><i class="fas fa-user"></i> {user.username}</li>
+                        return <li key={user.id}><i className="fas fa-user"></i> {user.username}</li>
                     }
                 })}
             </ul>

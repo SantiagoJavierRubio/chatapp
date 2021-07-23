@@ -4,8 +4,7 @@
     font-size: 1rem;
     width: 100%;
     height: 100%;
-    max-width: 80vh;
-    max-height: 80vh;
+    position: static;
 }
 
 .modal h2 {
@@ -29,7 +28,7 @@
     display: none;
 }
 
-button:hover:enabled {
+.modal button:hover:enabled {
     box-shadow: 1px 1px black;
 }
 
@@ -48,14 +47,14 @@ button:hover:enabled {
     box-shadow: 2px 2px black;
 }
 
-img {
+.modal img {
     padding: none;
     height: auto;
     max-width: 500px;
     max-height: 700px;
 }
 
-canvas {
+.modal canvas {
     padding: none;
 }
 
@@ -126,9 +125,7 @@ canvas {
 
 #send-btn {
     font-size: 2rem;
-    margin-top: auto;
     width: 100%;
-    height: fit-content;
 }
 
 #send-btn:hover:enabled {
