@@ -14,22 +14,26 @@ const ChatBox = (props) => {
     const [imgData, setImgData] = useState({});
 
     socket.on('msg', (msg_data) => {
-        if (msg_data.message_id !== messages[messages.length - 1].message_id) {
-            let new_messages = [...messages];
-            if (msg_data.isImg && !imgData[msg_data.file]) {
-                axios.get(`/images/${msg_data.file}`)
-                .then((response) => {
-                    let new_img_data = imgData;
-                    new_img_data[msg_data.file] = response.data
-                    setImgData(new_img_data);
-                })
-                .catch((err) => console.log(err));
+        if (messages.length > 1) {
+            if(msg_data.message_id !== messages[messages.length-1].message_id) {
+                console.log(messages[messages.length-1].message_id);
+                console.log(msg_data.message_id);
             }
-            new_messages.push(msg_data)
-            updateMsg(new_messages);
-            let bottom = document.getElementById('chat-bottom');
-            bottom.scrollIntoView({behavior: "auto"});
         }
+        let new_messages = [...messages];
+        if (msg_data.isImg && !imgData[msg_data.file]) {
+            axios.get(`/images/${msg_data.file}`)
+            .then((response) => {
+                let new_img_data = imgData;
+                new_img_data[msg_data.file] = response.data
+                setImgData(new_img_data);
+            })
+            .catch((err) => console.log(err));
+        }
+        new_messages.push(msg_data)
+        updateMsg(new_messages);
+        let bottom = document.getElementById('chat-bottom');
+        bottom.scrollIntoView({behavior: "auto"});
     })
     
     useEffect(() => {

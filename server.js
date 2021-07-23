@@ -116,6 +116,7 @@ io.on('connection', (socket) => {
             active_users.splice(index, 1);
             io.emit('users', active_users);
         }
+        socket.removeAllListeners();
     })
 });
 
