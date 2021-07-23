@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import LoginBox from './components/LoginBox';
 import UserList from './components/UserList';
 import ChatBox from './components/ChatBox';
@@ -7,6 +7,16 @@ import { io } from 'socket.io-client';
 const socket = io();
 
 function App() {
+
+  useEffect(() => {
+
+    const disconnectUser = () => {
+      socket.disconnect();
+    }
+    window.onbeforeunload = (e) => {
+      return disconnectUser;
+    };
+  });
 
   const [logged, logIn] = useState(false);
 

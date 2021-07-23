@@ -6,6 +6,23 @@
     height: 100%;
 }
 
+.modal h2 {
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: left;
+    color: black;
+}
+
+.modal h3 {
+    font-size: 1.5rem;
+    margin: .5rem;
+    margin-bottom: 2.5rem;
+    color: red;
+    background: none;
+    text-align: left;
+    text-shadow: none;
+}
+
 #file-upload {
     display: none;
 }
@@ -80,7 +97,7 @@ canvas {
 
 .h-img {
     display: inline-block;
-    width: 100%;
+    width: auto;
 }
 
 .tag-text {
