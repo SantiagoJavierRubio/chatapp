@@ -96,7 +96,7 @@ const ImageTagger = (props) => {
     const handleSubmit = async () => {
         setSend(false);
         try {
-            const res = await axios.post('/img_upload', { file, headers: {
+            const res = await axios.post('https://santiagoschat.herokuapp.com/img_upload', { file, headers: {
                 'Content-Type': 'multipart/form-data'
                 } 
             });

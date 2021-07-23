@@ -25,7 +25,7 @@ const ChatBox = (props) => {
         socket.off('msg').on('msg', (msg_data) => {
             let new_messages = [...messages];
             if (msg_data.isImg && !imgData[msg_data.file]) {
-                axios.get(`/images/${msg_data.file}`)
+                axios.get(`https://santiagoschat.herokuapp.com/images/${msg_data.file}`)
                 .then((response) => {
                     let new_img_data = imgData;
                     new_img_data[msg_data.file] = response.data

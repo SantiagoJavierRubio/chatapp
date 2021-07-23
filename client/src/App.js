@@ -4,7 +4,7 @@ import UserList from './components/UserList';
 import ChatBox from './components/ChatBox';
 import './App.css';
 import { io } from 'socket.io-client';
-const socket = io();
+const socket = io('https://santiagoschat.herokuapp.com/');
 
 function App() {
 
