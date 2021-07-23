@@ -21,11 +21,12 @@ const LoginBox = (props) => {
 
     return (
         <React.Fragment>
-            <form onSubmit={handleSubmit}>
-                <h1>Enter your nickname</h1>
-                <input className="entry-form" type='text' onChange={handleInput}/>
+            <h1>Welcome to the chat!</h1>
+            <form onSubmit={handleSubmit} id="entry-form">
+                <h2>Please enter your nickname</h2>
+                <input id="name-form" type='text' onChange={handleInput}/>
                 <button type="submit">
-                    <i className="fas fa-sign-in-alt fa-4x"></i>
+                    Enter room <i className="fas fa-sign-in-alt fa-sm"></i>
                 </button>
             </form>
         </React.Fragment>

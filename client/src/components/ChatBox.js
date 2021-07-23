@@ -12,14 +12,16 @@ const ChatBox = (props) => {
     const [inputMsg, getMsg] = useState();
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [imgData, setImgData] = useState({});
+    const [loaded, imgLoaded] = useState(false);
 
-    socket.on('msg', (msg_data) => {
-        if (messages.length > 1) {
-            if(msg_data.message_id !== messages[messages.length-1].message_id) {
-                console.log(messages[messages.length-1].message_id);
-                console.log(msg_data.message_id);
-            }
+    const scrollDown = () => {
+        if (!modalIsOpen) {
+            let bottom = document.getElementById('chat-bottom');
+            bottom.scrollIntoView({behavior: "auto"});
         }
+    }
+    
+    socket.off('msg').on('msg', (msg_data) => {
         let new_messages = [...messages];
         if (msg_data.isImg && !imgData[msg_data.file]) {
             axios.get(`/images/${msg_data.file}`)
@@ -27,36 +29,21 @@ const ChatBox = (props) => {
                 let new_img_data = imgData;
                 new_img_data[msg_data.file] = response.data
                 setImgData(new_img_data);
+                imgLoaded(true);
             })
             .catch((err) => console.log(err));
         }
         new_messages.push(msg_data)
         updateMsg(new_messages);
-        let bottom = document.getElementById('chat-bottom');
-        bottom.scrollIntoView({behavior: "auto"});
+        scrollDown();
     })
-    
+
     useEffect(() => {
-        // socket.on('msg', (msg_data) => {
-        //     let new_messages = [...messages];
-        //     if (msg_data.isImg && !imgData[msg_data.file]) {
-        //         axios.get(`/images/${msg_data.file}`)
-        //         .then((response) => {
-        //             let new_img_data = imgData;
-        //             new_img_data[msg_data.file] = response.data
-        //             setImgData(new_img_data);
-        //         })
-        //         .catch((err) => console.log(err));
-        //     }
-        //     new_messages.push(msg_data)
-        //     updateMsg(new_messages);
-        //     if (!modalIsOpen) {
-        //         let bottom = document.getElementById('chat-bottom');
-        //         bottom.scrollIntoView({behavior: "auto"});
-        //     }
-        // })
-        console.log('oli');
-    }, [imgData]);
+        if(loaded) {
+            imgLoaded(false);
+            scrollDown();
+        }
+    }, [loaded]);
 
     const handleInput = e => {
         let new_msg = e.target.value;
@@ -90,7 +77,7 @@ const ChatBox = (props) => {
                                 {message.isImg ? (
                                     <SentImg file={imgData[message.file]} tags={message.tags} id={message.file} />
                                 ):(
-                                 <p className="msg">{message.text}</p>
+                                    <p className="msg">{message.text}</p>
                                 )}
                             </div>
                         )
@@ -101,7 +88,7 @@ const ChatBox = (props) => {
                                 {message.isImg ? (
                                     <SentImg file={imgData[message.file]} tags={message.tags} id={message.file} />
                                 ):(
-                                 <p className="msg">{message.text}</p>
+                                    <p className="msg">{message.text}</p>
                                 )}
                                 
                             </div>

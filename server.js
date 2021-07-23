@@ -105,6 +105,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('disconnect', () => {
+        console.log('user disconnected');
         let index = null;
         for(user of active_users) {
             if(user.id === socket.id){

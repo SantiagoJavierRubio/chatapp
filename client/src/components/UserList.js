@@ -7,7 +7,7 @@ const UserList = (props) => {
     const [userList, setUsers] = useState([]); 
 
     useEffect(() => {
-        socket.on('users', (active_users) => {
+        socket.off('users').on('users', (active_users) => {
             setUsers(active_users);
         });
     });

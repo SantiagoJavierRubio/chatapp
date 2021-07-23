@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 const SentImg = (props) => {
 
-    const { file, tags, id } = props;
+    const { file, tags, id, load } = props;
 
     const [imgSize, setImgSize] = useState({width: 0, height: 0});
 
@@ -32,7 +32,6 @@ const SentImg = (props) => {
         let imgWidth = img.width;
         let imgHeight = img.height;
         setImgSize({width: imgWidth, height: imgHeight});
-        e.target.src = file;
     }
 
     const showTags = e => {
@@ -76,7 +75,7 @@ const SentImg = (props) => {
     } else {
         return (
             <div className="img-msg">
-                <img src={file} alt="sent-img" />
+                <img src={file} alt="sent-img" id={id} />
             </div>
         )
     }
