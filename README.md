@@ -16,5 +16,5 @@ Client deployed to https://adoring-lalande-b4d9b6.netlify.app/
 Things to fix:
 
 1) Tag canvas doesn't adapt to image size on chat board
-2) Image tagger send button shrinking when out of space
+2) [Safari] Image tagger send button shrinking when out of space - [All] Set send button position on bottom
 3) Add mobile responsiveness
