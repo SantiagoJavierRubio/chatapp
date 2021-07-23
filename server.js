@@ -1,7 +1,8 @@
 const express =  require('express');
 const cors = require('cors');
 const app = express();
-const http = require('http');;
+const http = require('http');
+const socketio =  require('socket.io');
 
 // Express setup
 app.set('port', process.env.PORT || 3001);
@@ -14,9 +15,7 @@ const server = http.createServer(app).listen(app.get('port'), () => {
     console.log(`Server listening to port ${app.get('port')}`);
 });
 
-const socketio =  require('socket.io')(server, {cors: {
-    origin: "https://adoring-lalande-b4d9b6.netlify.app"
-}});
+
 
 app.get('/', (req, res) => {
     res.send('Welcome to the server');
@@ -42,7 +41,9 @@ app.get('/images/:code', (req, res) => {
 // Socket io
 const active_users = []
 
-const io = socketio(server);
+const io = socketio(server, {cors: {
+    origin: "https://adoring-lalande-b4d9b6.netlify.app"
+}});
 io.on('connection', (socket) => {
 
     console.log(`User connected with socket: ${socket.id}`);
