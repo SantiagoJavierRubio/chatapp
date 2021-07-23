@@ -9,29 +9,33 @@ const ImageTagger = (props) => {
 
     const { socket, setModalIsOpen } = props;
 
+    // STATES
+
+    // window
     const [showModal, setModal] = useState(false);
-    const [toTag, setTag] = useState(false);
-    const [file, setFile] = useState(null);
+    const [buttonText, setButtonText] = useState('Upload image');
     const [canSend, setSend] = useState(false);
-    const [mousePos, setMouse] = useState([]);
+    // for change window size
+    const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    const [proportionSize, setProportions] = useState(1);
+    // for img handling
+    const [file, setFile] = useState(null);
     const [imgSize, setImgSize] = useState([0,0]);
     const [imgOriginalSize, setOriginalSize] = useState([0,0]);
+    // for tag functions
+    const [toTag, setTag] = useState(false);
+    const [mousePos, setMouse] = useState([]);
     const [tags, setTags] = useState([]);
     const [isTagging, setTagging] = useState(false);
     const [hasCanvas, setHasCanvas] = useState(false);
     const [hlTag, setHighlight] = useState(null);
-    const [buttonText, setButtonText] = useState('Upload image');
-
-    const [windowHeight, setWindowHeight] = useState(window.innerHeight);
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-    const [proportionSize, setProportions] = useState(1);
-
+    
     useEffect(() => {
         Modal.setAppElement('body');
     }, []);
 
     // Window resize management
-
     useEffect(() => {
         setWindowWidth(window.innerWidth*0.8);
         setWindowHeight(window.innerHeight*0.8) ;
@@ -53,25 +57,14 @@ const ImageTagger = (props) => {
         }
     })
 
-    // Image upload functions
+    // IMAGE UPLOAD FUNCTIONS
 
+    // function to compress and resize img (to save space)
     const resizeFile = (file) => new Promise((resolve) => {
-        Resizer.imageFileResizer(
-            file,
-            600,
-            600,
-            "JPEG",
-            80,
-            0,
-            (uri) => {
-                resolve(uri)
-            },
-            "base64"
-        );
+        Resizer.imageFileResizer(file, 600, 600, "JPEG", 80, 0,(uri) => {resolve(uri)}, "base64");
     });
 
-    // Comentado para probar si sirve el base 64
-
+    // if a file is confirmed allows sending it
     useEffect(() => {
         if (file) {
             setSend(true);
@@ -79,6 +72,7 @@ const ImageTagger = (props) => {
         }
     }, [file]);
 
+    // calls resize and sets the img
     const handleFile = async (e) => {
         try {
             const image = e.target.files[0];
@@ -89,8 +83,30 @@ const ImageTagger = (props) => {
         }
     }
 
+    // gets img data on tag window
+    const handleImgLoad = () => {
+        let img = document.getElementById('img-to-tag');
+        let imgWidth = img.width;
+        let imgHeight = img.height;
+        setOriginalSize([imgWidth, imgHeight]);
+        setImgSize([imgWidth, imgHeight]);
+    }
+
+    // submits the base64 img to backend and triggers img send
+    const handleSubmit = async () => {
+        setSend(false);
+        try {
+            const res = await axios.post('/img_upload', { file, headers: {
+                'Content-Type': 'multipart/form-data'
+                } 
+            });
+            const code = res.data.code;
+            handleSendImage(code);
+        } catch (err) { console.log(err.message) }
+    }
+
+    // handles the socket emit and cleans the form
     const handleSendImage = (code) => {
-        
         setModal(false);
         let msg_data = {
             usr_id: socket.id,
@@ -109,19 +125,6 @@ const ImageTagger = (props) => {
         
     }
 
-    // submits the base64 img to backend and triggers img send
-    const handleSubmit = async () => {
-        setSend(false);
-        try {
-            const res = await axios.post('/img_upload', { file, headers: {
-                'Content-Type': 'multipart/form-data'
-                } 
-            });
-            const code = res.data.code;
-            handleSendImage(code);
-        } catch (err) { console.log(err.message) }
-    }
-
     const handleQuit = () => {
         setHasCanvas(false);
         setTag(false);
@@ -129,7 +132,6 @@ const ImageTagger = (props) => {
         setTagging(false);
         setModal(false);
         setButtonText('Upload image');
-        // Mejorable: borrar la imagen solo al salir completamente del modal.
         setFile(null);
     }
 
@@ -140,10 +142,9 @@ const ImageTagger = (props) => {
         setTagging(false);
     }
 
-    // Image tag functions
+    // IMAGE TAG FUNCTIONS
 
     // draw canvas with tags
-
     useEffect(() => {
         if(hasCanvas){
             drawCanvas();
@@ -157,7 +158,6 @@ const ImageTagger = (props) => {
         } else setModalIsOpen(true);
     }, [showModal])
 
-    // las coordenadas se convierten en relación al tamaño de la imagen
     const drawCanvas = () => {
         if (showModal) {
             try {
@@ -190,23 +190,15 @@ const ImageTagger = (props) => {
         } 
     }
 
+    // get relative mouse position
     const handleMouse = e => {
-        // get relative mouse position
         let elOffset = e.target.getBoundingClientRect();
         let mouseX = Math.round(e.clientX - elOffset.left);
         let mouseY = Math.round(e.clientY - elOffset.top);
         setMouse([mouseX, mouseY]);
     }
 
-    const handleImgLoad = () => {
-        let img = document.getElementById('img-to-tag');
-        let imgWidth = img.width;
-        let imgHeight = img.height;
-        setOriginalSize([imgWidth, imgHeight]);
-        setImgSize([imgWidth, imgHeight]);
-    }
-
-    // los valores se convierten a una relación con el tamaño de la imagen
+    // Values are taken on proportion to image size
     const handleMouseDown = () => {
         if (!isTagging) {
             let newTag = [mousePos[0]/imgSize[0], mousePos[1]/imgSize[1]];
@@ -252,6 +244,7 @@ const ImageTagger = (props) => {
         setTags(newTagSet);
     }
 
+    // set tag on which user is hovering to highlight it
     const handleTagSelect = e => {
         let index = e.target.id;
         setHighlight(index);
@@ -260,6 +253,8 @@ const ImageTagger = (props) => {
     const handleNoTagSelected = () => {
         setHighlight(null)
     }
+
+    // RENDER
 
     return (
         <React.Fragment>
@@ -272,7 +267,6 @@ const ImageTagger = (props) => {
             >
                 <div className="modal">
                     <h2>Send a photo</h2>
-                    {/* <FileBase type="file" multiple={false} onDone={({ base64 }) => setFile(base64)} /> */}
                     <label htmlFor="file-upload" className="custom-file-upload">
                         {buttonText}
                     </label>

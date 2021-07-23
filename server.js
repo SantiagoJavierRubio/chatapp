@@ -8,7 +8,7 @@ const socketio =  require('socket.io');
 app.set('port', process.env.PORT || 3001);
 app.use(express.json({limit: '50mb'}));
 app.use(cors());
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/build'));
 
 const server = http.createServer(app).listen(app.get('port'), () => {
     console.log(`Server listening to port ${app.get('port')}`);

@@ -21,21 +21,23 @@ const ChatBox = (props) => {
         }
     }
     
-    socket.off('msg').on('msg', (msg_data) => {
-        let new_messages = [...messages];
-        if (msg_data.isImg && !imgData[msg_data.file]) {
-            axios.get(`/images/${msg_data.file}`)
-            .then((response) => {
-                let new_img_data = imgData;
-                new_img_data[msg_data.file] = response.data
-                setImgData(new_img_data);
-                imgLoaded(true);
-            })
-            .catch((err) => console.log(err));
-        }
-        new_messages.push(msg_data)
-        updateMsg(new_messages);
-        scrollDown();
+    useEffect(() => {
+        socket.off('msg').on('msg', (msg_data) => {
+            let new_messages = [...messages];
+            if (msg_data.isImg && !imgData[msg_data.file]) {
+                axios.get(`/images/${msg_data.file}`)
+                .then((response) => {
+                    let new_img_data = imgData;
+                    new_img_data[msg_data.file] = response.data
+                    setImgData(new_img_data);
+                    imgLoaded(true);
+                })
+                .catch((err) => console.log(err));
+            }
+            new_messages.push(msg_data)
+            updateMsg(new_messages);
+            scrollDown();
+        })
     })
 
     useEffect(() => {
@@ -66,6 +68,9 @@ const ChatBox = (props) => {
             getMsg(null);
         }
     }
+
+    // RENDER
+    
     return (
         <div id="main-chat">
             {!modalIsOpen ? (

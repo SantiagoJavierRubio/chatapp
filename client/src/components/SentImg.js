@@ -7,7 +7,6 @@ const SentImg = (props) => {
     const [imgSize, setImgSize] = useState({width: 0, height: 0});
 
     useEffect(() => {
-
         function handleResize() {
             try {
                     let img = document.getElementById(`${file}`);
@@ -27,7 +26,6 @@ const SentImg = (props) => {
     }, []);
 
     const handleImgLoad = async e => {
-
         let img = e.target;
         let imgWidth = img.width;
         let imgHeight = img.height;
@@ -52,6 +50,8 @@ const SentImg = (props) => {
         let ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
+
+    // RENDER
 
     if (tags.length > 0) {
         return (

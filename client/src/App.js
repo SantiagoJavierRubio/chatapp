@@ -8,8 +8,8 @@ const socket = io();
 
 function App() {
 
+  // handle user disconnection
   useEffect(() => {
-
     const disconnectUser = () => {
       socket.disconnect();
     }
@@ -20,6 +20,7 @@ function App() {
 
   const [logged, logIn] = useState(false);
 
+  // gets called from Loginbox to show main chat
   const handleLogin = () => {
     logIn(true);
   }
