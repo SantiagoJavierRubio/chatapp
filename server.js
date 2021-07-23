@@ -7,7 +7,7 @@ const socketio =  require('socket.io');
 // Express setup
 app.set('port', process.env.PORT || 3001);
 app.use(express.json({limit: '50mb'}));
-app.use(cors({origin: "https://adoring-lalande-b4d9b6.netlify.app"}));
+app.use(cors({origin: ["https://adoring-lalande-b4d9b6.netlify.app", "http://localhost:3000"]}));
 app.use(express.static(__dirname + '/static'));
 app.set('trust proxy', 1);
 
@@ -42,7 +42,7 @@ app.get('/images/:code', (req, res) => {
 const active_users = []
 
 const io = socketio(server, {cors: {
-    origin: "https://adoring-lalande-b4d9b6.netlify.app"
+    origin: ["https://adoring-lalande-b4d9b6.netlify.app", "http://localhost:3000"]
 }});
 io.on('connection', (socket) => {
 
